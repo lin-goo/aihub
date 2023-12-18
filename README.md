@@ -7,7 +7,7 @@ AIHub 是一个Python库，它提供了与AI服务提供商进行交互的端点
 - **Endpoint** 类：用于封装与特定AI服务提供商的通信。
   - 支持多种服务提供商，包括OpenAI和百度。
   - 异步发送消息并获取响应。
-  - 从JSON配置文件中加载和保存端点配置。配置文件可参考[example.json](example.json)。
+  - 从JSON配置文件中加载和保存端点配置。配置文件可参考[endpoint_exmaple.json](Config/endpoint_example.json)和[endpoint_list_example.json](Config/endpoint_list_example.json)。
 
 - **Dialogue** 类：用于管理与AI服务的对话，自动处理消息上下文。
   - 发送消息，并通过异步或回调的方式接收回复。
@@ -50,11 +50,12 @@ async def dialogue_example():
     response = await dialogue.send_message_async("你好！你是谁？")
     print("Received response:", response)
 
-    # 发送消息，并使用回调函数处理回复
+    # 再次发送消息，并使用回调函数处理回复
+    # Dialogue会自动维护消息历史，因此AI服务可以根据上下文进行回复
     def my_callback(res):
         print("Received response with callback:", res)
 
-    dialogue.send_message_with_callback("你好！你是谁？", my_callback)
+    dialogue.send_message_with_callback("刚刚我说了啥？", my_callback)
 
 asyncio.run(dialogue_example())
 ```
