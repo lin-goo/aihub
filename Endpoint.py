@@ -1,10 +1,8 @@
 import json
-from typing import List, Callable, Awaitable, Dict, runtime_checkable, Protocol, Any
-
+import aiohttp
 import requests
 from loguru import logger
-import asyncio
-
+from typing import List, Dict, runtime_checkable, Protocol, Any
 from openai import AsyncOpenAI
 
 
@@ -66,14 +64,17 @@ class BaiduMessageSender:
         return response.get("access_token")
 
     async def send_message(self, message: List[Dict[str, str]], **kwargs) -> str | Dict[str, str]:
-        url = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions_pro?access_token=" + self.access_token
+        url = f"https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions_pro?access_token={self.access_token}"
         payload = json.dumps({"messages": message})
         headers = {'Content-Type': 'application/json'}
-        response = requests.request("POST", url, headers=headers, data=payload).json()
-        if kwargs.get("only_text", True):
-            return response["result"]
-        else:
-            return response
+
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, headers=headers, data=payload) as response:
+                response_json = await response.json()
+                if kwargs.get("only_text", True):
+                    return response_json["result"]
+                else:
+                    return response_json
 
 
 class Endpoint:
