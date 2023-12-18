@@ -39,7 +39,7 @@ import asyncio
 from AIHub import Dialogue, Endpoint
 
 async def dialogue_example():
-    # 通过已有的endpoint实例，创建Dialogue实例
+    # 通过已有的Endpoint实例，创建Dialogue实例
     my_endpoint = Endpoint(name="openai.official", provider="openai", api_key="sk-xxx", model="gpt-4-1106-preview")
     dialogue = Dialogue(endpoint=my_endpoint)
     
@@ -50,7 +50,7 @@ async def dialogue_example():
     response = await dialogue.send_message_async("你好！你是谁？")
     print("Received response:", response)
 
-    # 使用回调函数发送消息
+    # 发送消息，并使用回调函数处理回复
     def my_callback(res):
         print("Received response with callback:", res)
 
