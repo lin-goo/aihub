@@ -19,7 +19,7 @@ AIHub 是一个Python库，它提供了与AI服务提供商进行交互的端点
 import asyncio
 from AIHub import Endpoint
 
-async def main():
+async def endpoint_example():
   # 从JSON配置文件加载
   endpoint = Endpoint.load_from_json('config.json')
   
@@ -30,8 +30,7 @@ async def main():
   response = await endpoint.send_message([{"role": "user", "content": "你好！"}], only_text=True)
   print("Received response:", response)
 
-if __name__ == '__main__':
-  asyncio.run(main())
+asyncio.run(endpoint_example())
 ```
 
 ### 创建并使用Dialogue
