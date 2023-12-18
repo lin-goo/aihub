@@ -102,13 +102,6 @@ class Endpoint:
             logger.error(f"Error while creating {kwargs['name']}: Unknown error: {e}")
 
     async def send_message(self, message: Any, **kwargs) -> Any:
-        """
-        发送消息到端口
-
-        :param message:
-        :param kwargs:
-        :return:
-        """
         try:
             return await self.sender.send_message(message, **kwargs)
         except Exception as e:
