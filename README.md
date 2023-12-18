@@ -20,11 +20,11 @@ import asyncio
 from AIHub import Endpoint
 
 async def endpoint_example():
-  # 从JSON配置文件加载
+  # 从JSON配置文件加载Endpoint
   endpoint = Endpoint.load_from_json('config.json')
   
-  # 使用配置创建Endpoint
-  my_endpoint = Endpoint(name="openai.official", provider="openai", api_key="sk-xxx", model="gpt-4-1106-preview")
+  # 或者直接使用配置创建Endpoint
+  endpoint = Endpoint(name="openai.official", provider="openai", api_key="sk-xxx", model="gpt-4-1106-preview")
   
   # 通过Endpoint实例发送消息列表，接收纯文本的应答
   response = await endpoint.send_message([{"role": "user", "content": "你好！"}], only_text=True)
@@ -70,38 +70,8 @@ print("Dialogue history:", messages_history)
 ```
 
 ## 文档
-### Dialogue 类
-
-Dialogue 类是用于与AI服务提供商进行交互的会话管理器。它封装了发送消息和接收回复的过程，并维护了一个消息历史列表。通过这个类，用户可以发送消息，以异步或回调的方式接收回复，并且该类将自动管理历史消息上下文。
-
-构造函数参数:
-
-- endpoint (Endpoint, 可选): 已经实例化的Endpoint对象，用于发送和接收消息。
-- endpoint_config_path (str, 可选): 一个JSON格式的配置文件路径，包含创建Endpoint所需的配置信息。
-
-实例属性:
-
-- messages (List[Dict[str, str]]): 存储对话中的消息和回复的历史列表。
-
-实例方法:
-
-- get_messages() -> List[Dict[str, str]]:
-    - 返回对话中的消息和回复的历史列表。
-
-- async send_message_async(message: str) -> str:
-    - 异步发送消息到与Dialogue关联的Endpoint，并等待回复。
-    - message 参数是要发送的文本消息。
-    - 此方法会将发送的消息和接收的回复添加到Dialogue实例的消息历史中。
-    - 返回从Endpoint接收到的回复。
-
-- send_message_with_callback(message: str, callback: Callable[[str], None]) -> None:
-    - 发送消息，并在接收到回复时调用指定的回调函数。
-    - message 参数是要发送的文本消息。
-    - callback 参数是一个回调函数，它接受一个字符串参数，即从Endpoint接收到的回复。
-
-
 ### Endpoint 类
-Endpoint 类是一个对AI服务通信的高级封装，它可以直接与不同的AI服务提供商的不同模型进行交流，并提供了简洁的接口。目前支持的服务提供商有OpenAI和百度（Baidu）。
+Endpoint 类是一个AI服务的高级封装，它可以直接与不同的AI服务提供商的不同模型进行通信，并提供了简洁的接口。目前支持的服务提供商有OpenAI和百度（Baidu）。
 
 类方法:
 
@@ -138,3 +108,31 @@ Endpoint 类是一个对AI服务通信的高级封装，它可以直接与不同
 - org_id (str, 可选): 组织ID，仅在使用OpenAI服务时需要。
 - api_base (str, 可选): API的基础URL，如果使用除默认之外的URL时提供。仅在使用OpenAI服务时需要。
 - secret_key (str, 可选): 服务提供商的密钥，仅在使用百度服务时需要。
+
+
+### Dialogue 类
+
+Dialogue 类是用于与AI服务提供商进行交互的会话管理器。通过这个类，用户可以创造一个具有消息上下文的对话，可以发送消息，并以异步或回调的方式接收回复。该类将自动维护一个消息历史列表，用户不必在每一次请求时传入所有的对话。
+
+每个Dialogue实例都必须指定一个Endpoint实例，用于发送和接收消息。在Dialogue的整个生命周期中，它都将通过同一个Endpoint实例进行对话。
+
+构造函数参数:
+
+- endpoint (Endpoint, 可选): 已经实例化的Endpoint对象，用于发送和接收消息。
+- endpoint_config_path (str, 可选): 一个JSON格式的配置文件路径，包含创建Endpoint所需的配置信息。
+
+实例方法:
+
+- get_messages() -> List[Dict[str, str]]:
+    - 返回对话中的消息和回复的历史列表。
+
+- async send_message_async(message: str) -> str:
+    - 异步发送消息到与Dialogue关联的Endpoint，并等待回复。
+    - message 参数是要发送的文本消息。
+    - 此方法会将发送的消息和接收的回复添加到Dialogue实例的消息历史中。
+    - 返回从Endpoint接收到的回复。
+
+- send_message_with_callback(message: str, callback: Callable[[str], None]) -> None:
+    - 发送消息，并在接收到回复时调用指定的回调函数。
+    - message 参数是要发送的文本消息。
+    - callback 参数是一个回调函数，它接受一个字符串参数，即从Endpoint接收到的回复。
