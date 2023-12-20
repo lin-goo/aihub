@@ -1,3 +1,4 @@
+import datetime
 import json
 import aiohttp
 import requests
@@ -51,7 +52,7 @@ class BaiduMessageSender:
 
         self.api_key = api_key
         self.secret_key = secret_key
-        self.access_token = self._get_access_token(api_key, secret_key)
+        self.access_token, self.token_obtained_time = self._get_access_token(api_key, secret_key)
 
         non_none_params = {k: v for k, v in self.__dict__.items() if v is not None}
         logger.debug(f"Baidu Endpoint Created with params: {non_none_params}")
@@ -61,9 +62,15 @@ class BaiduMessageSender:
         url = "https://aip.baidubce.com/oauth/2.0/token"
         params = {"grant_type": "client_credentials", "client_id": api_key, "client_secret": secret_key}
         response = requests.post(url, params=params).json()
-        return response.get("access_token")
+        return response.get("access_token"), datetime.datetime.now()
+
+    def check_and_refresh_token(self):
+        if (datetime.datetime.now() - self.token_obtained_time).days >= 25:
+            self.access_token, self.token_obtained_time = self._get_access_token(self.api_key, self.secret_key)
+            logger.debug("Refreshing Baidu access token")
 
     async def send_message(self, message: List[Dict[str, str]], **kwargs) -> str | Dict[str, str]:
+        self.check_and_refresh_token()
         url = f"https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions_pro?access_token={self.access_token}"
         payload = json.dumps({"messages": message})
         headers = {'Content-Type': 'application/json'}

@@ -56,6 +56,8 @@ async def dialogue_example():
         print("Received response with callback:", res)
 
     dialogue.send_message_with_callback("刚刚我说了啥？", my_callback)
+    
+    await asyncio.sleep(10)
 
 asyncio.run(dialogue_example())
 ```
