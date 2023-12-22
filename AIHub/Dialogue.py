@@ -11,13 +11,16 @@ class Dialogue:
         if not endpoint_config_path and not endpoint:
             raise ValueError("Either endpoint or endpoint_path must be specified")
         if endpoint_config_path and not endpoint:
-            endpoint = Endpoint.load_from_json(endpoint_config_path)
+            endpoint = Endpoint.load_from_yaml(endpoint_config_path)
         self.endpoint = endpoint
 
     def get_messages(self):
         return self.messages
 
-    async def send_message_async(self, message: str) -> str:
+    def clear_messages(self):
+        self.messages = []
+
+    async def send_message(self, message: str) -> str:
         self.messages.append({"role": "user", "content": message})
         logger.debug(f"Sending message {message} to endpoint {self.endpoint.name}")
         response = await self.endpoint.send_message(self.messages, only_text=True)
@@ -30,5 +33,5 @@ class Dialogue:
             response = f.result()
             callback(response)
 
-        future = asyncio.ensure_future(self.send_message_async(message))
+        future = asyncio.ensure_future(self.send_message(message))
         future.add_done_callback(complete_callback)

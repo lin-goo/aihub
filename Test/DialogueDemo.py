@@ -1,13 +1,13 @@
 import asyncio
-from AIHub import Dialogue, Endpoint
+from AIHub import Dialogue
 
 
 async def dialogue_example():
     # 直接读取本地Endpoint配置文件，创建Dialogue实例
-    dialogue = Dialogue(endpoint_config_path='../LocalConfig/baidu.json')
+    dialogue = Dialogue(endpoint_config_path='./LocalConfig/baidu_endpoint.yaml')
 
     # 异步发送消息并获取纯文本回复
-    response = await dialogue.send_message_async("你好！你是谁？")
+    response = await dialogue.send_message("你好！你是谁？")
     print("Received response:", response)
 
     # 再次发送消息，并使用回调函数处理回复
@@ -19,5 +19,5 @@ async def dialogue_example():
 
     await asyncio.sleep(10)
 
-
-asyncio.run(dialogue_example())
+if __name__ == '__main__':
+    asyncio.run(dialogue_example())
