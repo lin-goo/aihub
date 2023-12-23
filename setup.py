@@ -6,7 +6,7 @@ setup(
     packages=find_packages(include=['AIHub', 'AIHub.*']),
     install_requires=[
         'loguru',
-        'pyyaml'
+        'pyyaml',
         'aiohttp',
         'openai',
         'setuptools',
