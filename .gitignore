@@ -1,2 +1,4 @@
 .idea
 LocalConfig
+# Ignore dynaconf secret files
+.secrets.*

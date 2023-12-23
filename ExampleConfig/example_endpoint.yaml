@@ -1,4 +1,0 @@
-name: openai.official.1
-provider: openai
-model: gpt-4-1106-preview
-api_key: sk-xxx

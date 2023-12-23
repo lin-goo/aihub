@@ -1,0 +1,40 @@
+baidu:
+  - name: 传熾的百度云账号
+    desc: 12月22日充值50元
+    provider: baidu
+    model: ERNIE-Bot 4.0
+    api_key: Ij1frzrZ9Fz17wqRGqLWQUcO
+    secret_key: uKCa6rtCqYqQkMdVDq4nwiYhmU5lxpLw
+
+  - name: 顿俊的百度云账号
+    desc:
+    provider: baidu
+    model: ERNIE-Bot 4.0
+    api_key: WkF9Q36NOPS3XArZWpeVNCD1
+    secret_key: CuBUV5jW5L7XPC9jtlrMYxi9O6FTOHQM
+
+  - name: 力力的百度云账号
+    desc:
+    provider: baidu
+    model: ERNIE-Bot 4.0
+    api_key: 9L5FqnP8GEF9R8seu8jqkdGR
+    secret_key: 1vqkG3G20bC3As4MGG4R05y9WLFWaa4R
+
+  - name: 玉林的百度云账号
+    desc: 12月23号充值50元
+    provider: baidu
+    model: ERNIE-Bot 4.0
+    api_key: p8BZPxesaIEQnyVO2iIbj4SZ
+    secret_key: VqluSdlSggiuQkwCFcpDIV3sGsy1RL93
+
+  - name: 未知用户
+    provider: baidu
+    model: ERNIE-Bot 4.0
+    api_key: xx
+    secret_key: xxx
+
+  - name: 未知用户
+    provider: baidu
+    model: ERNIE-Bot 4.0
+    api_key: xx
+    secret_key: xxx
